@@ -47,11 +47,11 @@ class Sizer(with_metaclass(MetaParams, object)):
     strategy = None
     broker = None
 
-    def getsizing(self, data, isbuy):
+    def getsizing(self, data, isbuy, atprice=None):
         comminfo = self.broker.getcommissioninfo(data)
-        return self._getsizing(comminfo, self.broker.getcash(), data, isbuy)
+        return self._getsizing(comminfo, self.broker.getcash(), data, isbuy, atprice)
 
-    def _getsizing(self, comminfo, cash, data, isbuy):
+    def _getsizing(self, comminfo, cash, data, isbuy, atprice):
         '''This method has to be overriden by subclasses of Sizer to provide
         the sizing functionality
 
@@ -67,6 +67,8 @@ class Sizer(with_metaclass(MetaParams, object)):
 
           - ``isbuy``: will be ``True`` for *buy* operations and ``False``
             for *sell* operations
+
+          - ``atPrice``: price at which the operation will be executed
 
         The method has to return the actual size (an int) to be executed. If
         ``0`` is returned nothing will be executed.
