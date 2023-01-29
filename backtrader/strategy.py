@@ -304,9 +304,10 @@ class Strategy(with_metaclass(MetaStrategy, StrategyBase)):
         self.lines.datetime[0] = dt
         self._notify()
 
+        okadv = True
         minperstatus = self._getminperstatus()
         if minperstatus < 0:
-            self.next()
+            okadv = self.next()
         elif minperstatus == 0:
             self.nextstart()  # only called for the 1st value
         else:
@@ -316,6 +317,7 @@ class Strategy(with_metaclass(MetaStrategy, StrategyBase)):
         self._next_observers(minperstatus, once=True)
 
         self.clear()
+        return okadv
 
     def _clk_update(self):
         if self._oldsync:

@@ -1659,22 +1659,19 @@ class Cerebro(with_metaclass(MetaParams, object)):
         datas = sorted(self.datas,
                        key=lambda x: (x._timeframe, x._compression))
 
+        ok2adv = True
+
         while True:
             # Check next incoming date in the datas
             dts = [d.advance_peek() for d in datas]
             dt0 = min(dts)
             if dt0 == float('inf'):
                 break  # no data delivers anything
-
-            # Timemaster if needed be
-            # dmaster = datas[dts.index(dt0)]  # and timemaster
-            slen = len(runstrats[0])
+            
             for i, dti in enumerate(dts):
-                if dti <= dt0:
+                if ok2adv and dti <= dt0:
                     datas[i].advance()
-                    # self._plotfillers2[i].append(slen)  # mark as fill
                 else:
-                    # self._plotfillers[i].append(slen)
                     pass
 
             self._check_timers(runstrats, dt0, cheat=True)
@@ -1691,8 +1688,10 @@ class Cerebro(with_metaclass(MetaParams, object)):
 
             self._check_timers(runstrats, dt0, cheat=False)
 
+            ok2adv = True
             for strat in runstrats:
-                strat._oncepost(dt0)
+                ret = strat._oncepost(dt0)
+                ok2adv = ok2adv and ret
                 if self._event_stop:  # stop if requested
                     return
 
