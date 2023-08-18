@@ -1,10 +1,12 @@
-1.9.76.125：
+1.9.78.123:
+  - Sizer add parameter 'atPrice'.
   - next() return value controll the data move.
 
-1.9.76.124:
-  - Sizer add parameter 'atPrice'.
-
-1.9.76.123:
+  - PR#479 Fix errors for simulated orders
+  - PR#472
+    - Added posibitity for Black theme for charts
+    - Added posibitity to run on matplotlib 3.6+
+    - Added posibitity to run on Python 3.9+
   - PR#405 Fix initial Renko bricks
   - Add option to select fixing of initial Renko bricks
   - PR#403 partial order execution iterpending reported incorrectly
